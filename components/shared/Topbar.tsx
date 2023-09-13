@@ -22,7 +22,7 @@ function TopBar() {
                                 />
                             </div>                  
                         </SignOutButton>
-                    </SignedIn>
+                    </SignedIn> 
                 </div>
                 <OrganizationSwitcher
                     appearance={{
