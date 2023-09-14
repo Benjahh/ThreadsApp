@@ -16,6 +16,8 @@ import {
   import { Input } from "@/components/ui/input"
   import * as z from "zod"
 import { Button } from "../ui/button"
+import Image from "next/image"
+import { ChangeEvent } from "react"
 
 interface Props {
     user: {
@@ -43,30 +45,54 @@ const AccountProfile = ({user, btnTitle } : Props) => {
         }
     })
 
+    const handleImage = ( e: ChangeEvent, fieldChange: (value: string) => void ) => {
+        e.preventDefault()
+    }
+
     function onSubmit(values: z.infer<typeof UserValidation>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
         console.log(values)
     }
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form 
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="flex flex-col justify-start">
                 <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Username</FormLabel>
-                    <FormControl>
-                        <Input placeholder="shadcn" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                        This is your public display name.
-                    </FormDescription>
-                    <FormMessage />
-                    </FormItem>
-                )}
+                    control={form.control}
+                    name="profile_photo"
+                    render={({ field }) => (
+                        <FormItem className="flex items-center gag-4">
+                        <FormLabel className="account-form_label">
+                            {field.value ? (
+                                <Image
+                                    src={field.value}
+                                    alt="profile_photo"
+                                    width={96}
+                                    height={96}
+                                    priority
+                                    className="rounded-full object-contain"
+                                />
+                            ) : (
+                                <Image
+                                    src="/assets/profile.svg"
+                                    alt="profile_photo"
+                                    width={96}
+                                    height={96}
+                                    className="object-contain"
+                                />
+                            )}
+                        </FormLabel>
+                        <FormControl className="flex-1 text-base-semibold text-gray-200">
+                            <Input
+                                type="file"
+                                accept="/image"
+                                placeholder="Upload a photo"
+                                onChange={(e) => handleImage(e, field.onChange)}
+                            />
+                        </FormControl>
+                        </FormItem>
+                    )}
                 />
                 <Button type="submit">Submit</Button>
             </form>
