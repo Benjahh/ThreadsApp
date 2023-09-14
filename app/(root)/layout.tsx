@@ -26,11 +26,11 @@ export default function RootLayout({
           <TopBar/>
             <main className='flex flex-row'>
               <LeftSideBar/>
-                <section className='main-container'>
-                  <div className='w-full max-w-4xl'>
-                    {children}
-                  </div>
-                </section>
+              <section className='main-container'>
+                <div className='w-full max-w-4xl'>
+                  {children}
+                </div>
+              </section>
               <RightSidebar/>
             </main>
           <BottomBar/>
