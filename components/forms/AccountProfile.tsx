@@ -14,6 +14,7 @@ import {
     FormMessage,
   } from "@/components/ui/form"
   import { Input } from "@/components/ui/input"
+  import { Textarea } from "@/components/ui/textarea"
   import * as z from "zod"
 import { Button } from "../ui/button"
 import Image from "next/image"
@@ -24,7 +25,7 @@ interface Props {
         id: string,
         objectId: string,
         name: string,
-        usernname: string,
+        username: string,
         bio: string,
         image: string,
         
@@ -38,10 +39,10 @@ const AccountProfile = ({user, btnTitle } : Props) => {
     const form = useForm({
         resolver: zodResolver(UserValidation),
         defaultValues: {
-            profile_photo: "",
-            name: "",
-            username: "",
-            bio: ""
+            profile_photo: user?.image || "",
+            name: user?.name || "",
+            username: user?.username || "",
+            bio: user?.bio || ""
         }
     })
 
@@ -62,7 +63,7 @@ const AccountProfile = ({user, btnTitle } : Props) => {
                     control={form.control}
                     name="profile_photo"
                     render={({ field }) => (
-                        <FormItem className="flex items-center gag-4">
+                        <FormItem className="flex items-center gap-4">
                         <FormLabel className="account-form_label">
                             {field.value ? (
                                 <Image
@@ -94,7 +95,61 @@ const AccountProfile = ({user, btnTitle } : Props) => {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Submit</Button>
+                <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-col  gap-3 w-full">
+                        <FormLabel className="text-base-semibold text-light-2">
+                          Name
+                        </FormLabel>
+                        <FormControl >
+                            <Input
+                                type="text"
+                                className="account-form_input no-focus"
+                                {...field}
+                            />
+                        </FormControl>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="username"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-col gap-3 w-full">
+                        <FormLabel className="text-base-semibold text-light-2">
+                          Username
+                        </FormLabel>
+                        <FormControl >
+                            <Input
+                                type="text"
+                                className="account-form_input no-focus"
+                                {...field}
+                            />
+                        </FormControl>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="bio"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-col gap-3 w-full">
+                        <FormLabel className="text-base-semibold text-light-2">
+                          Bio
+                        </FormLabel>
+                        <FormControl>
+                            <Textarea
+                                rows={10}
+                                className="account-form_input no-focus"
+                                {...field}
+                            />
+                        </FormControl>
+                        </FormItem>
+                    )}
+                />
+                <Button type="submit" className="bg-primary-500">Submit</Button>
             </form>
         </Form>
     )
