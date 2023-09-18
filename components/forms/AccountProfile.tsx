@@ -23,6 +23,7 @@ import { FILE } from "dns"
 import { isBase64Image } from "@/lib/utils"
 import { useUploadThing } from "@/lib/uploadthing"
 import { start } from "repl"
+import { updateUser } from "@/lib/actions/user.actions"
 
 interface Props {
     user: {
@@ -86,6 +87,8 @@ const AccountProfile = ({user, btnTitle } : Props) => {
                 values.profile_photo = imgRes[0].fileUrl
             }
         }
+
+        await updateUser
 
         
     }
