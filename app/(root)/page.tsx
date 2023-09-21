@@ -1,11 +1,11 @@
-import ThreadCard from "@/components/cards/ThreadCard"
-import { fetchPosts } from "@/lib/actions/thread.actions"
-import User from "@/lib/models/user.model"
-import { currentUser } from "@clerk/nextjs"
+import ThreadCard from '@/components/cards/ThreadCard';
+import { fetchPosts } from '@/lib/actions/thread.actions';
+
+import { currentUser } from '@clerk/nextjs';
 
 export default async function Home() {
-  const result = await fetchPosts(1, 30)
-  const user = await currentUser()
+  const result = await fetchPosts(1, 30);
+  const user = await currentUser();
 
   return (
     <>
@@ -16,22 +16,22 @@ export default async function Home() {
           <p className="no-result">No threads found</p>
         ) : (
           <>
-          { result.posts.map((post)=> (
-            <ThreadCard
-              key={post.id}
-              id={post.id}
-              currentUserId={user?.id || ""}
-              parentId={post.parentId}
-              content={post.text}
-              author={post.author}
-              community={post.community}
-              createdAt={post.createdAt}
-              comments={post.children}
-            />
-          ))}
+            {result.posts.map((post) => (
+              <ThreadCard
+                key={post.id}
+                id={post.id}
+                currentUserId={user?.id || ''}
+                parentId={post.parentId}
+                content={post.text}
+                author={post.author}
+                community={post.community}
+                createdAt={post.createdAt}
+                comments={post.children}
+              />
+            ))}
           </>
         )}
       </section>
     </>
-  )
+  );
 }
