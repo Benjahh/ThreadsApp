@@ -1,0 +1,13 @@
+{
+  "editor.minimap.enabled": true,
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.colorTheme": "Andromeda",
+  "editor.mouseWheelZoom": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "tabnine.experimentalAutoImports": true,
+  "editor.formatOnSave": true
+}
