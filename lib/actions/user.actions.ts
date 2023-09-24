@@ -140,6 +140,8 @@ export async function getActivity(userId: string) {
       (acc, userThread) => acc.concat(userThread.children),
       []
     );
+    console.log('User Threads:', userThreads);
+    console.log('Child Thread IDs:', childThreadIds);
 
     const replies = await Thread.find({
       _id: { $in: childThreadIds },

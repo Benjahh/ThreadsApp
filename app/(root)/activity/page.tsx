@@ -1,8 +1,9 @@
+import Image from 'next/image';
+import Link from 'next/link';
 import { currentUser } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
+
 import { fetchUser, getActivity } from '@/lib/actions/user.actions';
-import Link from 'next/link';
-import Image from 'next/image';
 
 async function Page() {
   const user = await currentUser();
@@ -11,11 +12,13 @@ async function Page() {
   const userInfo = await fetchUser(user.id);
   if (!userInfo?.onboarded) redirect('/onboarding');
 
+  console.log(userInfo._id);
   const activity = await getActivity(userInfo._id);
 
   return (
-    <section>
-      <h1 className="head-text mb-10 ">Activity</h1>
+    <>
+      <h1 className="head-text">Activity</h1>
+
       <section className="mt-10 flex flex-col gap-5">
         {activity.length > 0 ? (
           <>
@@ -24,16 +27,15 @@ async function Page() {
                 <article className="activity-card">
                   <Image
                     src={activity.author.image}
-                    alt="Profile picture"
-                    height={20}
+                    alt="user_logo"
                     width={20}
-                    className="rouended-full object-cover"
+                    height={20}
+                    className="rounded-full object-cover"
                   />
                   <p className="!text-small-regular text-light-1">
                     <span className="mr-1 text-primary-500">
                       {activity.author.name}
-                    </span>
-                    {''}
+                    </span>{' '}
                     replied to your thread
                   </p>
                 </article>
@@ -41,10 +43,10 @@ async function Page() {
             ))}
           </>
         ) : (
-          <p className="!text-base-regular text-light-3"> No actiivy yet</p>
+          <p className="!text-base-regular text-light-3">No activity yet</p>
         )}
       </section>
-    </section>
+    </>
   );
 }
 
