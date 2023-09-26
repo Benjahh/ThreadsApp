@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import User from '../models/user.model';
 import { connectToDB } from '../mongoose';
 import Thread from '../models/thread.model';
-import { FilterQuery, SortOrder } from 'mongoose';
+import { FilterQuery, SortOrder, Types } from 'mongoose';
 
 interface Params {
   userId: string;
@@ -134,18 +134,18 @@ export async function getActivity(userId: string) {
   try {
     connectToDB();
 
+    // Find all threads created by the user
     const userThreads = await Thread.find({ author: userId });
 
-    const childThreadIds = userThreads.reduce(
-      (acc, userThread) => acc.concat(userThread.children),
-      []
-    );
-    console.log('User Threads:', userThreads);
-    console.log('Child Thread IDs:', childThreadIds);
+    // Collect all the child thread ids (replies) from the 'children' field of each user thread
+    const childThreadIds = userThreads.reduce((acc, userThread) => {
+      return acc.concat(userThread.children);
+    }, []);
 
+    // Find and return the child threads (replies) excluding the ones created by the same user
     const replies = await Thread.find({
       _id: { $in: childThreadIds },
-      author: { $ne: userId },
+      author: { $ne: userId }, // Exclude threads authored by the same user
     }).populate({
       path: 'author',
       model: User,
@@ -153,7 +153,8 @@ export async function getActivity(userId: string) {
     });
 
     return replies;
-  } catch (error: any) {
-    throw new Error(`Failed to fetch activity ${error.message}`);
+  } catch (error) {
+    console.error('Error fetching replies: ', error);
+    throw error;
   }
 }
